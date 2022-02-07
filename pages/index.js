@@ -1,31 +1,30 @@
-import {
-  Heading,
-  Button,
-  Flex,
-  Text,
-  Box,
-  SimpleGrid,
-  useColorModeValue,
-  Wrap,
-  WrapItem,
-  Center,
-  Link,
-} from "@chakra-ui/react";
-import useAuth from "src/hooks/useAuth";
+import { Box } from "@chakra-ui/react";
+import Layout from "src/components/Layout";
+import Footer from "src/components/Footer";
+
+import { getAllTechnologies, getAllSeries } from "src/lib/dato-cms";
 
 function Home() {
-  const { user, signin } = useAuth();
-
   return (
-    <Box>
-      <h1>Home</h1>
-      <Link href="/sobre">
-        <a>Acessar página Sobre</a>
-      </Link>
-
-      <button onClick={() => signin()}>Entrar com github</button>
-    </Box>
+    <Layout>
+      <Box pb={10}>
+        <Footer />
+      </Box>
+    </Layout>
   );
 }
 
 export default Home;
+
+export const getStaticProps = async () => {
+  const technologies = await getAllTechnologies();
+  const series = await getAllSeries();
+
+  return {
+    props: {
+      technologies,
+      series,
+    },
+    revalidate: 120,
+  };
+};
